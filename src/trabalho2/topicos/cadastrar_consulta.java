@@ -6,8 +6,11 @@
 package trabalho2.topicos;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ListSelectionModel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -15,9 +18,13 @@ import java.util.logging.Logger;
  */
 public class cadastrar_consulta extends javax.swing.JFrame {
 
-    /**
-     * Creates new form agendar
-     */
+    DefaultTableModel jTListaConsultas = new DefaultTableModel(null,new String []{"Id", "Data", "DataConsulta","Descricao", "Especialidade"});
+    
+    List<Agendamento> Agendamento;
+    ListSelectionModel tmAgendamento;
+            
+    
+    
     public cadastrar_consulta() {
         initComponents();
     }
@@ -48,6 +55,10 @@ public class cadastrar_consulta extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
+        jTFPesquisar = new javax.swing.JTextField();
+        jBPesquisar = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTListaConsultas = new javax.swing.JTable();
 
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -121,6 +132,16 @@ public class cadastrar_consulta extends javax.swing.JFrame {
             }
         });
 
+        jBPesquisar.setText("Pesquisar");
+        jBPesquisar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBPesquisarActionPerformed(evt);
+            }
+        });
+
+        jTListaConsultas.setModel(tmAgendamento);
+        jScrollPane3.setViewportView(jTListaConsultas);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -161,9 +182,14 @@ public class cadastrar_consulta extends javax.swing.JFrame {
                         .addComponent(jTFDataAgendamento, javax.swing.GroupLayout.PREFERRED_SIZE, 411, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(42, 42, 42))
             .addGroup(layout.createSequentialGroup()
-                .addGap(417, 417, 417)
+                .addGap(435, 435, 435)
                 .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(36, 36, 36)
+                .addComponent(jTFPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jBPesquisar)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jScrollPane3)
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jBNovo, jButton3, jButton4, jButton6});
@@ -171,9 +197,14 @@ public class cadastrar_consulta extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addGap(40, 40, 40)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jTFPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jBPesquisar)))
+                    .addComponent(jLabel1))
+                .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTFDataConsultaAgendamento, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
@@ -183,7 +214,7 @@ public class cadastrar_consulta extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5)
@@ -196,7 +227,8 @@ public class cadastrar_consulta extends javax.swing.JFrame {
                             .addComponent(jButton4)
                             .addComponent(jButton6)
                             .addComponent(jButton1))
-                        .addGap(280, 280, 280)))
+                        .addGap(70, 70, 70)))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -247,9 +279,14 @@ public class cadastrar_consulta extends javax.swing.JFrame {
         jTFDescricaoAgendamento.setText("");
     }//GEN-LAST:event_jBNovoActionPerformed
 
+    
     private void jTFDataConsultaAgendamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTFDataConsultaAgendamentoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTFDataConsultaAgendamentoActionPerformed
+
+    private void jBPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBPesquisarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jBPesquisarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -289,6 +326,7 @@ public class cadastrar_consulta extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBNovo;
+    private javax.swing.JButton jBPesquisar;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -302,8 +340,11 @@ public class cadastrar_consulta extends javax.swing.JFrame {
     private javax.swing.JList<String> jList1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextField jTFDataAgendamento;
     private javax.swing.JTextField jTFDataConsultaAgendamento;
     private javax.swing.JTextArea jTFDescricaoAgendamento;
+    private javax.swing.JTextField jTFPesquisar;
+    private javax.swing.JTable jTListaConsultas;
     // End of variables declaration//GEN-END:variables
 }
