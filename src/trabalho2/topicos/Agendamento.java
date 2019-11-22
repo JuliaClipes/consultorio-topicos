@@ -9,15 +9,22 @@ public class Agendamento {
     private String data_agendamento;
     private String datac_agendamento;
     private String descricao_agendamento;
+    private String nome_cliente_a;
     private String especialidade_agendamento;
     
 
     public int getIdAgendamento() {
         return id_agendamento;
     }
+    public String getNomeClienteCC() {
+        return nome_cliente_a;
+    }
 
     public void setIdAgendamento(int id_agendamento) {
         this.id_agendamento = id_agendamento;
+    }
+    public void setNomeClienteCC(String nome_cliente_a) {
+        this.nome_cliente_a = nome_cliente_a;
     }
 
     public String getDescricaoAgendamento() {

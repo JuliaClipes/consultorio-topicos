@@ -4,8 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class AgendamentoDAO {
 
@@ -25,30 +23,27 @@ public class AgendamentoDAO {
 
         stmt.execute();
     }
-
-    public List<Agendamento> getListaAgendamento() throws SQLException {
-        String sql = "SELECT * FROM agendamento";
-        PreparedStatement stmt = this.conexao.prepareStatement(sql);
-
-        ResultSet resultado_agendamento = stmt.executeQuery();
-
-        List<Agendamento> ListaAgendamento = new ArrayList<Agendamento>();
-
-        while (resultado_agendamento.next()) {
-       
-            Agendamento agenda = new Agendamento();
-            agenda.setDataAgendamento(resultado_agendamento.getString("data_agendamento_banco"));
-            agenda.setDatacAgendamento(resultado_agendamento.getString("datac_agendamento_banco"));
-            agenda.setDescricaoAgendamento(resultado_agendamento.getString("descricao_agendamento_banco"));
-            agenda.setEspecialidadeAgendamento(resultado_agendamento.getString("especialidade_agendamento_banco"));
+ public boolean lista_consulta(String nome) throws SQLException{
+	String sql = "Select * from agendamento where  nome= ?";
+	PreparedStatement stmt = Conexao.getConexao().prepareStatement(sql);
+        stmt.setString(1, nome);
+	ResultSet retorno = stmt.executeQuery();
+	
+        boolean teste = false;
+                
+	while(retorno.next()){
             
-            ListaAgendamento.add(agenda);
+                System.out.println("Informacoes da Consulta:");
+		System.out.println("Data do agendamento:"+retorno.getString("data_agendamento_banco"));
+                System.out.println("Data da consulta:"+retorno.getString("datac_agendamento_banco"));
+		System.out.println("Descricao:"+retorno.getString("descricao_agendamento_banco"));
+                System.out.println("Especialidade:"+retorno.getString("especialidade_agendamento_banco"));
+                System.out.println("Exame:"+retorno.getString("endereco"));
+                
+                return teste = true;
         }
-        resultado_agendamento.close();
-        stmt.close();
-        
-        return (List<Agendamento>) resultado_agendamento;
-        
-    }
+         return teste;
+         }
+    
 
 }
