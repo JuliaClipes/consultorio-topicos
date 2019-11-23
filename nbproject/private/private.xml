@@ -12,9 +12,12 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/xampp/htdocs/consultorio-topicos/src/trabalho2/topicos/cadastrar_cliente.java</file>
             <file>file:/C:/xampp/htdocs/consultorio-topicos/src/trabalho2/topicos/AgendamentoDAO.java</file>
+            <file>file:/C:/xampp/htdocs/consultorio-topicos/src/trabalho2/topicos/Agendamento.java</file>
             <file>file:/C:/xampp/htdocs/consultorio-topicos/src/trabalho2/topicos/cadastrar_consulta.java</file>
-            <file>file:/C:/xampp/htdocs/consultorio-topicos/src/trabalho2/topicos/lista_consulta.java</file>
+            <file>file:/C:/xampp/htdocs/consultorio-topicos/src/trabalho2/topicos/index.java</file>
+            <file>file:/C:/xampp/htdocs/consultorio-topicos/src/trabalho2/topicos/cadastrar_consulta_cliente.java</file>
         </group>
     </open-files>
 </project-private>

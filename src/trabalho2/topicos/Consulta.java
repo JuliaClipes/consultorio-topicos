@@ -9,6 +9,16 @@ public class Consulta {
     private String nome_paciente_consulta;
     private String data_consulta;
     private String recomendacoes_consulta;
+    private String medico_consulta;
+
+    public String getMedicoConsulta() {
+        return medico_consulta;
+    }
+
+    public void setMedicoConsulta(String medico_consulta) {
+        this.medico_consulta = medico_consulta;
+    }
+    
 
     public int getIdConsulta() {
         return id_consulta;

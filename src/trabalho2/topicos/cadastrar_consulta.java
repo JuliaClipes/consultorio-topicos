@@ -6,10 +6,18 @@
 package trabalho2.topicos;
 
 import java.sql.SQLException;
-
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
+import javax.swing.table.DefaultTableModel;
+import java.lang.String;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 /**
  *
@@ -17,9 +25,11 @@ import java.util.logging.Logger;
  */
 public class cadastrar_consulta extends javax.swing.JFrame {
 
-            
-    
-    
+    DefaultTableModel tmTabelaDadosA = new DefaultTableModel(null, new String[]{"Data", "Data da Consulta", "Descrição", "Especialidade"});
+    List<Agendamento> agendamentol;
+
+    ListSelectionModel lsmContato;
+
     public cadastrar_consulta() {
         initComponents();
     }
@@ -36,24 +46,25 @@ public class cadastrar_consulta extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList<>();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTFDescricaoAgendamento = new javax.swing.JTextArea();
-        jTFDataConsultaAgendamento = new javax.swing.JTextField();
-        jTFDataAgendamento = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
-        jCBEspecialidadeAgendamento = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
         jBNovo = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
-        jTFPesquisar = new javax.swing.JTextField();
-        jBPesquisar = new javax.swing.JButton();
+        jBExcluirC = new javax.swing.JButton();
+        jTFBuscarC2 = new javax.swing.JTextField();
+        jBuscar = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jTFDataConsultaAgendamento = new javax.swing.JTextField();
+        jTFDataAgendamento = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jCBEspecialidadeAgendamento = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
         jTFNPCC = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTFDescricaoAgendamento = new javax.swing.JTextArea();
 
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -64,17 +75,70 @@ public class cadastrar_consulta extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jLabel1.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(56, 176, 222));
         jLabel1.setText("AGENDAMENTO");
 
+        jButton1.setFont(new java.awt.Font("Verdana", 0, 11)); // NOI18N
+        jButton1.setText("Salvar Alterações");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jBNovo.setFont(new java.awt.Font("Verdana", 0, 11)); // NOI18N
+        jBNovo.setText("Limpa");
+        jBNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBNovoActionPerformed(evt);
+            }
+        });
+
+        jBExcluirC.setFont(new java.awt.Font("Verdana", 0, 11)); // NOI18N
+        jBExcluirC.setText("Excluir");
+        jBExcluirC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBExcluirCActionPerformed(evt);
+            }
+        });
+
+        jTFBuscarC2.setFont(new java.awt.Font("Verdana", 0, 10)); // NOI18N
+        jTFBuscarC2.setText("Procurar consulta por data (dd/mm/aaaa)");
+        jTFBuscarC2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTFBuscarC2ActionPerformed(evt);
+            }
+        });
+
+        jBuscar.setFont(new java.awt.Font("Verdana", 0, 11)); // NOI18N
+        jBuscar.setText("Buscar");
+        jBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBuscarActionPerformed(evt);
+            }
+        });
+
+        jTable1.setBorder(javax.swing.BorderFactory.createEtchedBorder(null, java.awt.Color.lightGray));
+        jTable1.setFont(new java.awt.Font("Verdana", 0, 11)); // NOI18N
+        jTable1.setModel(tmTabelaDadosA
+        );
+        jTable1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        lsmContato = jTable1.getSelectionModel();
+        lsmContato.addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    jTTabelaLinhaSelecionada(jTable1);
+                }
+            }
+        });
+        jScrollPane3.setViewportView(jTable1);
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Informações para agendamento de consulta", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Verdana", 0, 12))); // NOI18N
+
+        jLabel2.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         jLabel2.setText("Data da consulta:");
-
-        jLabel3.setText("Descrição:");
-
-        jLabel4.setText("Data:");
-
-        jTFDescricaoAgendamento.setColumns(20);
-        jTFDescricaoAgendamento.setRows(5);
-        jScrollPane1.setViewportView(jTFDescricaoAgendamento);
 
         jTFDataConsultaAgendamento.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
@@ -93,8 +157,13 @@ public class cadastrar_consulta extends javax.swing.JFrame {
             }
         });
 
+        jLabel4.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+        jLabel4.setText("Data:");
+
+        jLabel5.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         jLabel5.setText("Especialidade:");
 
+        jCBEspecialidadeAgendamento.setFont(new java.awt.Font("Verdana", 0, 11)); // NOI18N
         jCBEspecialidadeAgendamento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Geral", "Psicólogo", "Psiquiatra", "Neurologista" }));
         jCBEspecialidadeAgendamento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -102,143 +171,196 @@ public class cadastrar_consulta extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Salvar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
-        jBNovo.setText("Novo");
-        jBNovo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jBNovoActionPerformed(evt);
-            }
-        });
-
-        jButton3.setText("Alterar");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-
-        jButton4.setText("Excluir");
-
-        jButton6.setText("Sair");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
-            }
-        });
-
-        jBPesquisar.setText("Pesquisar");
-        jBPesquisar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jBPesquisarActionPerformed(evt);
-            }
-        });
-
+        jLabel6.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         jLabel6.setText("Nome paciente:");
+
+        jLabel3.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+        jLabel3.setText("Descrição:");
+
+        jTFDescricaoAgendamento.setColumns(20);
+        jTFDescricaoAgendamento.setRows(5);
+        jScrollPane1.setViewportView(jTFDescricaoAgendamento);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTFDataConsultaAgendamento, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jTFDataAgendamento, javax.swing.GroupLayout.PREFERRED_SIZE, 411, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jCBEspecialidadeAgendamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addGap(18, 18, 18)
+                                .addComponent(jTFNPCC, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 411, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTFDataConsultaAgendamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel4)
+                    .addComponent(jTFDataAgendamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5)
+                            .addComponent(jCBEspecialidadeAgendamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(jTFNPCC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addGap(0, 12, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(463, 463, 463))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane3)
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jTFBuscarC2, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jBuscar)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(37, 37, 37)
                         .addComponent(jBNovo)
+                        .addGap(32, 32, 32)
+                        .addComponent(jBExcluirC)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton3)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton1)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton6))
+                        .addComponent(jButton1))
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addGap(18, 18, 18)
-                                .addComponent(jTFNPCC))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                    .addComponent(jLabel5)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(jCBEspecialidadeAgendamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                    .addComponent(jLabel2)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jTFDataConsultaAgendamento, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 411, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTFDataAgendamento, javax.swing.GroupLayout.PREFERRED_SIZE, 411, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(42, 42, 42))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(435, 435, 435)
-                .addComponent(jLabel1)
-                .addGap(36, 36, 36)
-                .addComponent(jTFPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jBPesquisar)
-                .addGap(0, 26, Short.MAX_VALUE))
+                        .addGap(23, 23, 23)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jBNovo, jButton3, jButton4, jButton6});
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jBExcluirC, jBNovo});
 
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTFPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jBPesquisar)))
-                    .addComponent(jLabel1))
-                .addGap(32, 32, 32)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTFDataConsultaAgendamento, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel4)
-                    .addComponent(jTFDataAgendamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addGap(10, 10, 10)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel5)
-                            .addComponent(jCBEspecialidadeAgendamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel6)
-                            .addComponent(jTFNPCC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(37, 37, 37)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jBNovo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton3)
-                            .addComponent(jButton4)
-                            .addComponent(jButton6)
-                            .addComponent(jButton1))
-                        .addGap(345, 345, 345))))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jBNovo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jBExcluirC)
+                    .addComponent(jButton1))
+                .addGap(55, 55, 55)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTFBuscarC2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jBuscar))
+                .addGap(28, 28, 28)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+
+    private void jTFBuscarC2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTFBuscarC2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTFBuscarC2ActionPerformed
+
+    private void jBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBuscarActionPerformed
+        // TODO add your handling code here
+        try {
+            // TODO add your handling code here:
+            ListaAgendamento();
+        } catch (SQLException ex) {
+            Logger.getLogger(cadastrar_consulta.class.getName()).log(Level.SEVERE, null, ex);
+        }        // TODO add your handling code here:
+    }
+
+    public void ListaAgendamento() throws SQLException {
+        AgendamentoDAO c = new AgendamentoDAO();
+        agendamentol = c.ListaAgendamento("%" + jTFBuscarC2.getText() + "%");
+
+        MostraBusca((ArrayList<Agendamento>) agendamentol);
+
+
+    }//GEN-LAST:event_jBuscarActionPerformed
+
+    private void jBExcluirCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBExcluirCActionPerformed
+        // TODO add your handling code here:
+        int resposta = JOptionPane.showConfirmDialog(this, "Tem certeza que deseja excluir este registro?", "Confirmação", JOptionPane.YES_NO_OPTION);
+
+        if (resposta == JOptionPane.YES_NO_OPTION) {
+            AgendamentoDAO agendamento;
+            try {
+                agendamento = new AgendamentoDAO();
+                // agendamento.exclui(agenda.get(jTable1.getSelectedRow()));
+            } catch (SQLException ex) {
+                Logger.getLogger(cadastrar_consulta.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_jBExcluirCActionPerformed
+
+    private void jBNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBNovoActionPerformed
+        // TODO add your handling code here:
+        jTFDataConsultaAgendamento.setText("");
+        jTFDataAgendamento.setText("");
+        jCBEspecialidadeAgendamento.getSelectedItem().toString();
+        jTFDescricaoAgendamento.setText("");
+        jTFNPCC.setText("");
+    }//GEN-LAST:event_jBNovoActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here: EVENTO NO BOTAO DE ENVIAR action
+        Agendamento agenda = new Agendamento();
+
+        agenda.setDataAgendamento(jTFDataAgendamento.getText());
+        agenda.setDatacAgendamento(jTFDataConsultaAgendamento.getText());
+        agenda.setDescricaoAgendamento(jTFDescricaoAgendamento.getText());
+        agenda.setNomeClienteCC(jTFNPCC.getText());
+        agenda.setEspecialidadeAgendamento(jCBEspecialidadeAgendamento.getSelectedItem().toString());
+
+        AgendamentoDAO agendamento;
+        try {
+            agendamento = new AgendamentoDAO();
+            agendamento.insere(agenda);
+        } catch (SQLException ex) {
+            Logger.getLogger(cadastrar_consulta.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jCBEspecialidadeAgendamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBEspecialidadeAgendamentoActionPerformed
         // TODO add your handling code here:
@@ -248,55 +370,13 @@ public class cadastrar_consulta extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTFDataAgendamentoActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here: EVENTO NO BOTAO DE ENVIAR action
-        Agendamento agenda= new Agendamento();
-        
-        agenda.setDataAgendamento(jTFDataAgendamento.getText());
-        agenda.setDatacAgendamento(jTFDataConsultaAgendamento.getText());
-        agenda.setDescricaoAgendamento(jTFDescricaoAgendamento.getText());
-        agenda.setNomeClienteCC(jTFNPCC.getText());
-        agenda.setEspecialidadeAgendamento(jCBEspecialidadeAgendamento.getSelectedItem().toString());
-        
-        
-        AgendamentoDAO agendamento;
-        try {
-            agendamento = new AgendamentoDAO();
-            agendamento.insere(agenda);
-        } catch (SQLException ex) {
-            Logger.getLogger(cadastrar_consulta.class.getName()).log(Level.SEVERE, null, ex);
-        }
-         
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jTFDataConsultaAgendamentoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTFDataConsultaAgendamentoFocusLost
-        // TODO add your handling code here: FOCUS LOST DA DATA PARA VERIFICAR SE ESTA DISPONIVEL
-    }//GEN-LAST:event_jTFDataConsultaAgendamentoFocusLost
-
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton6ActionPerformed
-
-    private void jBNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBNovoActionPerformed
-        // TODO add your handling code here:
-        jTFDataConsultaAgendamento.setText("");
-        jTFDataAgendamento.setText("");
-        jCBEspecialidadeAgendamento.getSelectedItem().toString();
-        jTFDescricaoAgendamento.setText("");
-    }//GEN-LAST:event_jBNovoActionPerformed
-
-    
     private void jTFDataConsultaAgendamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTFDataConsultaAgendamentoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTFDataConsultaAgendamentoActionPerformed
 
-    private void jBPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBPesquisarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jBPesquisarActionPerformed
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    private void jTFDataConsultaAgendamentoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTFDataConsultaAgendamentoFocusLost
+        // TODO add your handling code here: FOCUS LOST DA DATA PARA VERIFICAR SE ESTA DISPONIVEL
+    }//GEN-LAST:event_jTFDataConsultaAgendamentoFocusLost
 
     /**
      * @param args the command line arguments
@@ -335,12 +415,10 @@ public class cadastrar_consulta extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jBExcluirC;
     private javax.swing.JButton jBNovo;
-    private javax.swing.JButton jBPesquisar;
+    private javax.swing.JButton jBuscar;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton6;
     private javax.swing.JComboBox<String> jCBEspecialidadeAgendamento;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -349,12 +427,37 @@ public class cadastrar_consulta extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JList<String> jList1;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTextField jTFBuscarC2;
     private javax.swing.JTextField jTFDataAgendamento;
     private javax.swing.JTextField jTFDataConsultaAgendamento;
     private javax.swing.JTextArea jTFDescricaoAgendamento;
     private javax.swing.JTextField jTFNPCC;
-    private javax.swing.JTextField jTFPesquisar;
+    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
+
+    private void MostraBusca(ArrayList<Agendamento> agendamento) {
+        if (agendamento.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Nenhuma consulta cadastrada");
+        } else {
+            String[] linha = new String[]{null, null, null, null};
+            for (int i = 0; i < agendamento.size(); i++) {
+
+                tmTabelaDadosA.addRow(linha);
+                tmTabelaDadosA.setValueAt(agendamento.get(i).getDataAgendamento(), i, 0);
+                tmTabelaDadosA.setValueAt(agendamento.get(i).getDatacAgendamento(), i, 1);
+                tmTabelaDadosA.setValueAt(agendamento.get(i).getDescricaoAgendamento(), i, 2);
+                tmTabelaDadosA.setValueAt(agendamento.get(i).getEspecialidadeAgendamento(), i, 3);
+                tmTabelaDadosA.setValueAt(agendamento.get(i).getEspecialidadeAgendamento(), i, 4);
+            }
+        }
+    }
+    
+    private void jTTabelaLinhaSelecionada(JTable jTable1){
+        Agendamento agendamento = new Agendamento();
+       // jTFDataConsultaAgendamento.setText(agendamento.get(jTable1.getSelectedRow()).getNome()); /*setText*/
+    }
 }

@@ -58,6 +58,10 @@ public class Agendamento {
     public void setEspecialidadeAgendamento(String especialidade_agendamento) {
         this.especialidade_agendamento = especialidade_agendamento;
     }
+
+    Object get(int selectedRow) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 
     
